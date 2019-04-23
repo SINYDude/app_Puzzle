@@ -1,0 +1,74 @@
+
+go.property("dir", vmath.vector3()) 
+
+function init(self)
+	-- Add initialization code here
+	-- Remove this function if not needed
+	print("you have reached mover", msg.url())
+	print(xpos .. "and" .. ypos, msg.url())
+
+	--self.moving = false                             -- [3]
+	--self.input = vmath.vector3()                    -- [4]
+	--self.dir = vmath.vector3(0, 1, 0)               -- [5]
+	--self.speed = 50  
+	
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt, sprite_pos)
+	-- Add update code here
+	-- Remove this function if not needed
+
+	--	go.set_position(sprite_pos , "mover#mover")
+
+
+	local pos = go.get_position()                   -- [3]
+--	pos = pos + self.dir * self.speed * dt          -- [4]
+	go.set_position(pos)   
+
+	--if self.moving then
+		--local pos = go.get_position()               -- [10]
+		--pos = pos + self.dir * self.speed * dt      -- [11]
+		--go.set_position(pos)                        -- [12]
+	--end
+--local pos = go.get_position()
+
+	if x >  pos then
+		pos = pos-1  ---self.dir * self.speed * dt
+	end
+				----pos = pos + self.dir * self.speed * dt
+
+	if x < pos	then 
+		pos = pos-1  ---self.dir * self.speed * dt
+	end
+
+	if y >  ypos then
+		pos = pos-1  ---self.dir * self.speed * dt
+	end
+
+	if y < ypos	then 
+		pos = pos-1  ---self.dir * self.speed * dt
+	end			
+		--go.set_position(pos)	
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+
+	
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end
