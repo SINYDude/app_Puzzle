@@ -21,7 +21,7 @@ function on_message(self, message_id, message, sender)
 	-- Remove this function if not needed
 
 	if message_id == hash("load_puzzle") then
-		local proxy = "#proxy_puzzle" 
+		local proxy = "#proxy_photo_" .. message.level 
 		msg.post(proxy, "load")
 	elseif message_id == hash("proxy_loaded") then
 		msg.post(sender, "init")
