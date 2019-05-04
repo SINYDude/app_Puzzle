@@ -1,6 +1,15 @@
 images {
   image: "/assets/background.png"
 }
+images {
+  image: "/assets/vaxxed_pz.png"
+}
+images {
+  image: "/assets/vaxxed_banner_pz.png"
+}
+images {
+  image: "/assets/vaxxed_button_pz.png"
+}
 margin: 0
 extrude_borders: 0
 inner_padding: 0

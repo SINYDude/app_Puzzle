@@ -67,7 +67,7 @@ function tmp_toBoard()
 		local thisThat = tilemap.get_tile("#gridTMP", "layer1", x, y)
 
 	
-		tilemap.set_tile("#grid","layer1",x,y,thisThat)
+		tilemap.set_tile( "#grid" ,"layer1",x,y,thisThat)
 
 		moveAway = vmath.vector3()
 		moveAway.x = 800
@@ -121,7 +121,7 @@ local function sprite_mover(t, i ,j)
 			start_pos.x = 560
 		end
 	elseif j <= 16 then
-		start_pos.y = 117.5
+		start_pos.y = 119.5
 		if j == 13 then
 			start_pos.x = 80
 		elseif j == 14 then
