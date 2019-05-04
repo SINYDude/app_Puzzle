@@ -1,0 +1,290 @@
+local function inversions(t)
+	local inv = 0
+	for i=1, #t do
+		for j=i+1, #t do
+			if t[i] > t[j] and t[j] ~= 0 then
+				inv = inv + 1
+			end
+		end
+	end
+	return inv
+end
+
+local function find(t, tile)
+	for i=1, #t do
+		if t[i] == tile then
+			local y = 5 - math.ceil(i/4)
+			local x = i - (math.ceil(i/4) - 1) * 4
+			return x,y
+		end
+	end
+end
+
+local function solvable(t)
+	local x,y = find(t, 0)
+	if y % 2 == 1 and inversions(t) % 2 == 0 then
+		return true
+	end
+	if y % 2 == 0 and inversions(t) % 2 == 1 then
+		return true
+	end
+	return false    
+end
+
+local function scramble(t)
+	for i=1, #t do
+		local tmp = t[i]
+		local r = math.random(#t)
+		t[i] = t[r]
+		t[r] = tmp
+	end
+	return t
+end
+
+local function swap(t, i, j)
+	local tmpi = t[i]
+
+	local tmp_board = t
+	--tmp_board[j] = t[i]
+
+	t[i] = t[j]
+	t[j] = tmpi
+
+	return t
+end
+
+
+
+function tmp_toBoard()
+	
+	-- function copys the temp map to the board (player)map
+	
+	for i=1, 16 do
+		
+		local y = 5 - math.ceil(i/4)
+		local x = i - (math.ceil(i/4) - 1) * 4
+
+		local thisThat = tilemap.get_tile("#gridTMP", "layer1", x, y)
+
+	
+		tilemap.set_tile("#grid","layer1",x,y,thisThat)
+
+		moveAway = vmath.vector3()
+		moveAway.x = 800
+		moveAway.y = 800
+		go.set_position( moveAway, "mover")	
+	end
+end
+
+local function sprite_mover(t, i ,j)
+
+	--`` changes sprite to selected tile
+	local the_square = ("square_".. t[j])
+	sprite.play_flipbook("/mover", the_square)  --anim_done)
+
+	--*********** get start position  *********
+	local start_pos = vmath.vector3()
+	--start_pos.x =64
+	--start_pos.y =64
+				--** center of Square 0 is (x = 80 and y = 119.5) each square is x 160 AND  y 239 
+	if j <= 4 then
+		start_pos.y = 833.5
+		if j == 1 then
+			start_pos.x = 80
+		elseif j == 2 then
+			start_pos.x = 240
+		elseif j == 3 then 
+			start_pos.x = 400
+		elseif j == 4 then
+			start_pos.x = 560
+		end
+	elseif j <= 8 then
+		start_pos.y = 594.5
+		if j == 5 then
+			start_pos.x = 80
+		elseif j == 6 then
+			start_pos.x = 240
+		elseif j == 7 then 
+			start_pos.x = 400
+		elseif j == 8 then
+			start_pos.x = 560
+		end
+	elseif j <= 12 then
+		start_pos.y = 355.5
+		if j == 9 then
+			start_pos.x = 80
+		elseif j == 10 then
+			start_pos.x = 240
+		elseif j == 11 then 
+			start_pos.x = 400
+		elseif j == 12 then
+			start_pos.x = 560
+		end
+	elseif j <= 16 then
+		start_pos.y = 117.5
+		if j == 13 then
+			start_pos.x = 80
+		elseif j == 14 then
+			start_pos.x = 240
+		elseif j == 15 then 
+			start_pos.x = 400
+		elseif j == 16 then
+			start_pos.x = 560
+		end
+	end
+
+	--start_pos.y = 119.5
+	--start_pos.x= 80
+
+	go.set_position(start_pos, "mover")
+
+	--tilemap.set_tile(#grid, "layer1",, layer, x, y, tile)
+	--********* get end position ***********
+	local end_pos = vmath.vector3()
+	
+
+	if i <= 4 then
+		end_pos.y = 833.5
+		if i == 1 then
+			end_pos.x = 80
+		elseif i == 2 then
+			end_pos.x = 240
+		elseif i == 3 then 
+			end_pos.x = 400
+		elseif i == 4 then
+			end_pos.x = 560
+		end
+	elseif i <= 8 then
+		end_pos.y = 594.5
+		if i == 5 then
+			end_pos.x = 80
+		elseif i == 6 then
+			end_pos.x = 240
+		elseif i == 7 then 
+			end_pos.x = 400
+		elseif i == 8 then
+			end_pos.x = 560
+		end
+	elseif i <= 12 then
+		end_pos.y = 355.5
+		if i == 9 then
+			end_pos.x = 80
+		elseif i == 10 then
+			end_pos.x = 240
+		elseif i == 11 then 
+			end_pos.x = 400
+		elseif i == 12 then
+			end_pos.x = 560
+		end
+	elseif i <= 16 then
+		end_pos.y = 117.5
+		if i == 13 then
+			end_pos.x = 80
+		elseif i == 14 then
+			end_pos.x = 240
+		elseif i == 15 then 
+			end_pos.x = 400
+		elseif i == 16 then
+			end_pos.x = 560
+		end
+	end
+
+	--end_pos.y = 119.5
+	--end_pos.x = 80
+	return end_pos
+end
+
+local function draw(t)
+				-- the number of squares  = '#t'
+	for i=1, #t do
+		
+		local y = 5 - math.ceil(i/4)
+		local x = i - (math.ceil(i/4) - 1) * 4
+
+		--tilemap.set_tile("#grid","layer1",x,y,t[i])
+		tilemap.set_tile("#gridTMP","layer1",x,y,t[i])
+
+		end
+end
+
+function init(self)
+	-- Add initialization code here
+	-- Remove this function if not needed
+
+	msg.post(".", "acquire_input_focus") 
+	math.randomseed(socket.gettime()) 
+	self.board = scramble({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0}) 
+	while not solvable(self.board) do 
+		self.board = scramble(self.board)
+	end
+	draw(self.board)
+	
+	tmp_toBoard()
+
+	self.done = false 
+	msg.post("#done", "disable") 
+
+	--edit change background color
+	msg.post("@render:", "clear_color", { color = vmath.vector4(255/255, 255/255, 255/255, 1) } )
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+
+	-- Deal with user input
+	if action_id == hash("click") and action.pressed and not self.done and (action.y < 956) then 
+
+		local x = math.ceil(action.x / 160) 
+		local y = math.ceil(action.y / 238)
+
+		local ex, ey = find(self.board, 0) 
+		
+		-- cancel any already existing anima tion
+		go.cancel_animations("mover", "position")
+		-- move 100 to the right in 1.5 seconds with 0 seconds delay
+		-----------go.get_position() + vmath.vector3(360, 360, 0)
+
+
+		if math.abs(x - ex) + math.abs(y - ey) == 1 then 
+			go.animate("mover", "position", go.PLAYBACK_ONCE_FORWARD, sprite_mover(self.board, (4-ey)*4+ex, (4-y)*4+x), go.EASING_LINEAR, .3 , 0,tmp_toBoard) 
+
+			--blank square to copy 
+			theBlank = tilemap.get_tile("#gridTMP", "layer1",ex, ey)
+			tilemap.set_tile("#grid", "layer1", x, y, theBlank)
+				
+			self.board = swap(self.board, (4-ey)*4+ex, (4-y)*4+x)
+
+			draw(self.board) 
+		end
+		--ex, ey = find(self.board, 0)
+		if inversions(self.board) == 0 and ex == 4 then 
+			self.done = true
+			msg.post("#done", "enable")
+		end
+		
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+
+	self.done = false
+	msg.post("#done", "disable") 
+end
